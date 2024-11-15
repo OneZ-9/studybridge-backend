@@ -7,7 +7,9 @@ export const connectDB = async () => {
     const { MONGODB_URI, MONGODB_PASSWORD } = process.env;
 
     if (!MONGODB_URI || !MONGODB_PASSWORD) {
-      throw new Error("Missing required environment variables");
+      throw new Error(
+        "Missing required environment variables for DB connection"
+      );
     }
 
     const connectionString = MONGODB_URI.replace(
@@ -19,7 +21,10 @@ export const connectDB = async () => {
     //   throw new Error("connectionString undefined");
     // }
 
-    await mongoose.connect(`${connectionString}`);
+    await mongoose.connect(`${connectionString}`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("DB connection successful");
   } catch (error) {
     console.log("DB connection failed", error);
