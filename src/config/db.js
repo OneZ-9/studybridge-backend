@@ -21,9 +21,7 @@ export const connectDB = async () => {
     //   throw new Error("connectionString undefined");
     // }
 
-    await mongoose.connect(`${connectionString}`, {
-      useNewUrlParser: true,
-    });
+    await mongoose.connect(`${connectionString}`, {});
     console.log("DB connection successful");
   } catch (error) {
     console.log("DB connection failed", error);
