@@ -16,7 +16,7 @@ export const getAllCourses = async (req, res, next) => {
       data: { courses },
     });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -34,7 +34,7 @@ export const getCourse = async (req, res, next) => {
       data: { course },
     });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };
 

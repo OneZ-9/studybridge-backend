@@ -26,7 +26,7 @@ connectDB();
 // Routes
 // app.use("/api/auth", authRoutes);
 // app.use("/api/v1/teachers", teacherRoutes);
-app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/courses", courseRoutes);
 
 app.all("*", (req, res, next) => {

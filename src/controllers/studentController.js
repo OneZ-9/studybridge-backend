@@ -12,7 +12,7 @@ export const getAllStudents = async (req, res) => {
       data: { students },
     });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -26,7 +26,7 @@ export const getStudent = async (req, res, next) => {
       data: { student },
     });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -42,13 +42,14 @@ export const createStudent = async (req, res, next) => {
       .safeParse(req.body);
 
     if (!newStudent.success) {
-      return res.status(400).json({ errors: newStudent.error.errors });
+      // return res.status(400).json({ errors: newStudent.error.errors });
+      next(newStudent.error);
     }
+
     const createdStudent = await Student.create(newStudent.data);
     res.status(201).json({ status: "success", data: null });
   } catch (error) {
-    // next(error);
-    res.status(400).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -64,7 +65,8 @@ export const updateStudent = async (req, res, next) => {
       .safeParse(req.body);
 
     if (!student.success) {
-      return res.status(400).json({ errors: student.error.errors });
+      // return res.status(400).json({ errors: student.error.errors });
+      next(student.error);
     }
 
     const updatedStudent = await Student.findByIdAndUpdate(
@@ -76,7 +78,7 @@ export const updateStudent = async (req, res, next) => {
       .status(201)
       .json({ status: "success", data: { student: updatedStudent } });
   } catch (error) {
-    res.status(400).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -85,6 +87,6 @@ export const deleteStudent = async (req, res, next) => {
     await Student.findByIdAndDelete(req.params.studentId);
     res.status(204).json({ status: "success", data: null });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };

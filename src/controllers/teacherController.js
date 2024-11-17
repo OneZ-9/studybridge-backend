@@ -12,7 +12,7 @@ export const getAllTeachers = async (req, res, next) => {
       data: { teachers },
     });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -26,7 +26,7 @@ export const getTeacher = async (req, res, next) => {
       data: { teacher },
     });
   } catch (error) {
-    res.status(404).json({ status: "fail", message: error });
+    next(error);
   }
 };
 
@@ -57,13 +57,14 @@ export const createTeacher = async (req, res, next) => {
       .safeParse(req.body);
 
     if (!newTeacher.success) {
-      return res.status(400).json({ errors: newTeacher.error.errors });
+      // return res.status(400).json({ errors: newTeacher.error.errors });
+      next(newTeacher.error);
     }
 
     // Create a new Teacher
     const createdTeacher = await Teacher.create(newTeacher.data);
     res.status(201).json({ status: "success", data: createdTeacher });
   } catch (error) {
-    res.status(400).json({ status: "fail", message: error });
+    next(error);
   }
 };
